@@ -35,4 +35,3 @@ mkdir build && cd build
 python3 ../configure.py -s cs2
 ambuild
 ```
-
