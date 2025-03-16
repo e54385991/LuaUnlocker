@@ -92,7 +92,7 @@ jobs:
       - name: Zip All Artifacts
         run: |
           cd all_artifacts
-          zip -r LuaUnlocker-${GITHUB_SHA::7}.zip ./*
+          zip -r LuaUnlocker-${{ github.sha_short }}.zip ./*
 
       - name: Release
         uses: softprops/action-gh-release@v2
