@@ -25,6 +25,8 @@ parser.options.add_argument('-a', '--plugin-alias', type=str, dest='plugin_alias
                        help='Plugin alias')
 parser.options.add_argument('--hl2sdk-root', type=str, dest='hl2sdk_root', default=None,
                        help='Root search folder for HL2SDKs')
+parser.options.add_argument('--hl2sdk-manifests', type=str, dest='hl2sdk_manifests', default='hl2sdk-manifests/',
+                       help='HL2SDK manifests source tree folder')
 parser.options.add_argument('--mms_path', type=str, dest='mms_path', default=None,
                        help='Metamod:Source source tree folder')
 parser.options.add_argument('--enable-debug', action='store_const', const='1', dest='debug',
@@ -36,4 +38,10 @@ parser.options.add_argument('-s', '--sdks', default='all', dest='sdks',
                             'comma-delimited list of engine names (default: "all")')
 parser.options.add_argument('--targets', type=str, dest='targets', default=None,
                             help="Override the target architecture (use commas to separate multiple targets).")
+# AddressSanitizer Instructions:
+# Copy devtools/dlhook/libasan.so.dlhook.so to the server
+# Run server with LD_PRELOAD="/path/to/libasan.so.dlhook.so /usr/lib/clang/11/lib/linux/libclang_rt.asan-x86_64.so" (for SteamRT3)
+# Note this may break some std functionality
+parser.options.add_argument('--asan', action='store_const', const='1', dest='asan',
+                       help='Build for AddressSanitizer')
 parser.Configure()
