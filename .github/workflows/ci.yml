@@ -41,7 +41,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: alliedmodders/hl2sdk
-          ref: cs2
+          ref: 533426bc896271d83de00dd7b467afd35ac727b1
           path: hl2sdk-cs2
 
       - name: Checkout AMBuild
