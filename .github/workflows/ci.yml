@@ -54,6 +54,18 @@ jobs:
         run: |
           cd ambuild && python setup.py install && cd ..
 
+      - name: Install Protobuf
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+
+      - name: Generate Protobuf Files
+        run: |
+          protoc --cpp_out=${{ github.workspace }}/hl2sdk-cs2/public/engine \
+            -I${{ github.workspace }}/hl2sdk-cs2/common \
+            ${{ github.workspace }}/hl2sdk-cs2/common/network_connection.proto
+        working-directory: hl2sdk-cs2
+
       - name: Build
         working-directory: LuaUnlocker
         shell: bash
@@ -91,7 +103,6 @@ jobs:
             cd ./Windows/
             zip -r ../${{ github.event.repository.name }}-${version}-windows.zip addons
             cd -
-          fi
 
       - name: Release
         uses: svenstaro/upload-release-action@v2
