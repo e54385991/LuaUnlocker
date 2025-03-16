@@ -83,18 +83,20 @@ jobs:
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v4
+        with:
+          path: ./artifacts
 
       - name: Package
         run: |
-          version=`echo $GITHUB_REF | sed "s/refs\/tags\///"`
-          ls -Rall
-          if [ -d "./Linux/" ]; then
-            cd ./Linux/
+          version=$(echo $GITHUB_REF | sed "s/refs\/tags\///")
+          ls -Rall ./artifacts
+          if [ -d "./artifacts/Linux/" ]; then
+            cd ./artifacts/Linux/
             tar -czf ../${{ github.event.repository.name }}-${version}-linux.tar.gz addons
             cd -
           fi
-          if [ -d "./Windows/" ]; then
-            cd ./Windows/
+          if [ -d "./artifacts/Windows/" ]; then
+            cd ./artifacts/Windows/
             zip -r ../${{ github.event.repository.name }}-${version}-windows.zip addons
             cd -
           fi
@@ -102,7 +104,12 @@ jobs:
       - name: Release
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          file: ${{ github.event.repository.name }}-*
+          repo_token: ${{ secrets.MY_GITHUB_TOKEN }}
+          file: ./artifacts/${{ github.event.repository.name }}-*
           tag: ${{ github.ref }}
           file_glob: true
+          release_name: Release ${{ github.ref }}
+          body: |
+            Automated release for ${{ github.ref }}
+          draft: false
+          prerelease: false
